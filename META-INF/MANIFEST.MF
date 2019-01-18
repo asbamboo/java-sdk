@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: java-sdk
+Bundle-SymbolicName: java-sdk
+Bundle-Version: 1.0.0.qualifier
+Bundle-ClassPath: java-sdk.jar,
+  build/libs/asbamboo-java-sdk.jar,
+  gradle/wrapper/gradle-wrapper.jar
