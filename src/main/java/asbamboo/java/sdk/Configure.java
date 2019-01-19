@@ -36,12 +36,12 @@ public class Configure
 	/**
 	 * api 接口的参数version
 	 */
-	public static String API_VERSION	= "1.0";
+	public static String API_VERSION	= "v1.0";
 
 	/**
-	 * 发起api请求设置的连接超时的秒数
+	 * 发起api请求设置的连接超时的毫秒数
 	 */
-	public static Integer HTTP_REQUEST_TIMEOUT	= 30; 
+	public static Integer HTTP_REQUEST_TIMEOUT	= 30000; 
 
 	/**
 	 * Http请求时在header中添加"X-Asbamboo-Client-User-Agent:JAVA_SDK_1.0"

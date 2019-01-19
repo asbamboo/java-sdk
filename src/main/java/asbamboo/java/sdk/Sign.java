@@ -26,12 +26,12 @@ public class Sign
 		Arrays.sort(keys);
 		
 		StringBuilder query	= new StringBuilder();
-		query.append(Configure.API_SECRET);
 		for(String key : keys) {
 			String value	= data.get(key).toString();
 			query.append(key).append(value);
 		}
-		
+		query.append(Configure.API_SECRET);
+		System.out.print(query.toString());
 		MessageDigest md5	= MessageDigest.getInstance("MD5");
 		byte[] bytes		= md5.digest(query.toString().getBytes("UTF-8"));
 	

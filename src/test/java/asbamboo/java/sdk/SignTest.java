@@ -23,6 +23,6 @@ public class SignTest
     	}catch(Exception e){
     		
     	}
-    	org.junit.Assert.assertEquals("sign is not equals", "F1FF4C223B5F8B0FB9EC378EB93D0063", sign);
+    	org.junit.Assert.assertEquals("sign is not equals", "1F7E8611433AE539B356837FD8842C72", sign);
     }
 }
