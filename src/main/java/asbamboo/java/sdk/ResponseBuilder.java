@@ -17,13 +17,18 @@ public class ResponseBuilder
 	 *  - API Response Json Data 中 code 等于 "0"
 	 *  - API Response Json Data 中 sign 有效
 	 */
-	protected boolean is_success;
+	protected boolean is_success = false;
 	
 	/**
 	 * HTTP Response code 等于 200 时, 解析 API Response Json Data 中的 message
 	 * HTTP Response code 不等于 200， 等于HTTP CODE 相关的Message。
 	 */
 	protected String message;
+	
+	/**
+	 * 验证响应结果的签名是否正确
+	 */
+	protected boolean is_valid_sign = false;
 	
 	/**
 	 * Api 响应 HTTP Response 的解析结果
@@ -45,7 +50,7 @@ public class ResponseBuilder
 	 */
 	protected Map<String, List<String>> http_headers;
 	
-	public static ResponseBuilder create(String api_name, Integer http_code, String http_body, Map<String, List<String>> http_headers)
+	public static ResponseBuilder create(String api_name, Integer http_code, String http_body, Map<String, List<String>> http_headers) throws Exception
 	{
 		if(api_name == "trade.pay"){
 			return new TradePayResponse(http_code, http_body, http_headers);
@@ -58,7 +63,7 @@ public class ResponseBuilder
      * @param http_body
      * @param http_headers
      */
-    public ResponseBuilder(Integer http_code, String http_body, Map<String, List<String>> http_headers)
+    public ResponseBuilder(Integer http_code, String http_body, Map<String, List<String>> http_headers) throws Exception
     {
         this.http_code 	 	= http_code;
         this.http_body		= http_body;
@@ -99,7 +104,7 @@ public class ResponseBuilder
     /**
      * 解析Api响应结果
      */
-    private void parse()
+    private void parse() throws Exception
     {
     	if(!this.checkHttpCode()){
     		return;
@@ -109,20 +114,26 @@ public class ResponseBuilder
     		return;
     	}
     	
-    	this.is_success	= true;
+    	if(!this.checkSign()){
+    		return;
+    	}
+    	
+    	if(!this.checkIsSuccess()){
+    		return;
+    	}
     }
     
     private boolean checkHttpCode()
     {
-    	if(this.http_code != 200){
+    	if(!this.http_code.equals(200)){
     		this.is_success	= false;
     		this.message = "HTTP Response Code:" + this.http_code;
     		return false;
     	}
-    	if(this.http_code == 200){
+    	if(this.http_code.equals(200)){
     		return true;
     	}
-    	
+		this.is_success	= false;    	
     	return false;
     }
     
@@ -135,6 +146,28 @@ public class ResponseBuilder
     	}
     	if(this.decoded_data.get("code").equals("0")){
     		this.message	= this.decoded_data.get("message").toString(); 
+    		return true;
+    	}
+		this.is_success	= false;    	
+    	return false;
+    }
+    
+    private boolean checkSign() throws Exception
+    {
+    	String sign	= Sign.genrateByResponse(this.decoded_data);
+    	if(this.decoded_data.getString("sign").equals(sign)){
+    		this.is_valid_sign	= true;
+    		return true;
+    	}
+		this.is_success	= false;
+		this.message	= "接口响应结果未通过签名认证。";
+    	return false;
+    }
+    
+    private boolean checkIsSuccess()
+    {
+    	if(this.http_code.equals(200) && this.decoded_data.get("code").equals("0") && this.is_valid_sign == true){
+    		this.is_success	= true;
     		return true;
     	}
     	return false;

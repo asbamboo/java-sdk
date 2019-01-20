@@ -15,7 +15,7 @@ public class TradePayResponse extends ResponseBuilder
 {
 	private JSONObject item;
 	
-	public TradePayResponse(Integer http_code, String http_body, Map<String, List<String>> http_headers)
+	public TradePayResponse(Integer http_code, String http_body, Map<String, List<String>> http_headers) throws Exception
 	{
 		super(http_code, http_body, http_headers);
 		this.item	= (JSONObject) this.decoded_data.get("data");
