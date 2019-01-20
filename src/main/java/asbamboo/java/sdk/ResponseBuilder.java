@@ -3,6 +3,7 @@ package asbamboo.java.sdk;
 import java.util.List;
 import java.util.Map;
 import org.json.JSONObject;
+import asbamboo.java.sdk.model.*;
 
 /**
  * @author 李春寅<licy2013@aliyun.com>
@@ -16,32 +17,40 @@ public class ResponseBuilder
 	 *  - API Response Json Data 中 code 等于 "0"
 	 *  - API Response Json Data 中 sign 有效
 	 */
-	private boolean is_success;
+	protected boolean is_success;
 	
 	/**
 	 * HTTP Response code 等于 200 时, 解析 API Response Json Data 中的 message
 	 * HTTP Response code 不等于 200， 等于HTTP CODE 相关的Message。
 	 */
-	private String message;
+	protected String message;
+	
+	/**
+	 * Api 响应 HTTP Response 的解析结果
+	 */
+	protected JSONObject decoded_data;
 
 	/**
 	 * APi 响应 HTTP CODE
 	 */
-	private Integer http_code;
+	protected Integer http_code;
 	
 	/**
 	 * APi 响应 HTTP Response
 	 */
-	private String http_body;
+	protected String http_body;
 	
 	/**
 	 * API响应 HTTP Headers
 	 */
-	private Map<String, List<String>> http_headers;
+	protected Map<String, List<String>> http_headers;
 	
-	public ResponseBuilder()
+	public static ResponseBuilder create(String api_name, Integer http_code, String http_body, Map<String, List<String>> http_headers)
 	{
-		
+		if(api_name == "trade.pay"){
+			return new TradePayResponse(http_code, http_body, http_headers);
+		}
+		return new ResponseBuilder(http_code, http_body, http_headers);
 	}
 			
     /**
@@ -55,6 +64,21 @@ public class ResponseBuilder
         this.http_body		= http_body;
         this.http_headers	= http_headers;
         this.parse();
+    }
+    
+    public boolean getIsSuccess()
+    {
+    	return this.is_success;
+    }
+    
+    public String getMessage()
+    {
+    	return this.message;
+    }
+    
+    public JSONObject getDecodedData()
+    {
+    	return this.decoded_data;
     }
     
     public Integer getHttpCode()
@@ -84,6 +108,8 @@ public class ResponseBuilder
     	if(!this.parseHttpBody()){
     		return;
     	}
+    	
+    	this.is_success	= true;
     }
     
     private boolean checkHttpCode()
@@ -102,10 +128,14 @@ public class ResponseBuilder
     
     private boolean parseHttpBody()
     {
-    	JSONObject decoded_data	= new JSONObject(this.http_body);
-    	if(decoded_data.get("code") != "0") {
-    		this.is_success	= false;
-    		this.message	= decoded_data.get("message").toString(); 
+    	this.decoded_data	= new JSONObject(this.http_body);
+    	if(!this.decoded_data.get("code").equals("0")){
+        	this.is_success	= false;
+    		this.message	= this.decoded_data.get("message").toString(); 
+    	}
+    	if(this.decoded_data.get("code").equals("0")){
+    		this.message	= this.decoded_data.get("message").toString(); 
+    		return true;
     	}
     	return false;
     }

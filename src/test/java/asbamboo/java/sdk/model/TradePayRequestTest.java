@@ -1,10 +1,8 @@
 package asbamboo.java.sdk.model;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import asbamboo.java.sdk.ApiResponse;
 import asbamboo.java.sdk.Configure;
 
 public class TradePayRequestTest {
@@ -39,15 +37,30 @@ public class TradePayRequestTest {
 	    	
 	    	trade_pay_request.generateSign();
 	    	
-	    	System.out.print(trade_pay_request.request_data);
-	    	
-	    	ApiResponse	response	= trade_pay_request.post();
-	    	
-	    	System.out.print(response.getCode());
-	    	System.out.print(response.getBody());
+	    	TradePayResponse response	= (TradePayResponse) trade_pay_request.post();
+
+	    	org.junit.Assert.assertTrue(response.getIsSuccess());
+	    	org.junit.Assert.assertNotNull(response.getMessage());
+	    	org.junit.Assert.assertEquals("200", response.getHttpCode().toString());
+	    	org.junit.Assert.assertNotNull(response.getHttpBody());
+	    	org.junit.Assert.assertNotNull(response.getHttpHeaders());
+	    	org.junit.Assert.assertEquals("", response.getCancelYmdhis());
+	    	org.junit.Assert.assertEquals(channel, response.getChannel());
+	    	org.junit.Assert.assertEquals(client_ip, response.getClientIp());
+	    	org.junit.Assert.assertNotNull(response.getInTradeNo());
+	    	org.junit.Assert.assertEquals(out_trade_no, response.getOutTradeNo());
+	    	org.junit.Assert.assertEquals("", response.getPayedYmdhis());
+	    	org.junit.Assert.assertEquals("", response.getPayokYmdhis());
+	    	org.junit.Assert.assertNotNull(response.getQrCode());
+	    	org.junit.Assert.assertEquals(title, response.getTitle());
+	    	org.junit.Assert.assertEquals(total_fee.toString(), response.getTotalFee());
+	    	org.junit.Assert.assertEquals("NOPAY", response.getTradeStatus());
+//	    	
+//	    	System.out.print(response.getInTradeNo());
+//	    	System.out.print(response.getHttpCode());
+//	    	System.out.print(response.getHttpBody());
     	}catch(Exception e){
     		org.junit.Assert.assertTrue(e.toString(),false);
     	}
-    }
-    
+    }    
 }

@@ -2,7 +2,7 @@ package asbamboo.java.sdk.model;
 
 import java.util.List;
 import java.util.Map;
-
+import org.json.JSONObject;
 import asbamboo.java.sdk.ResponseBuilder;
 
 /**
@@ -13,4 +13,66 @@ import asbamboo.java.sdk.ResponseBuilder;
  */
 public class TradePayResponse extends ResponseBuilder
 {
+	private JSONObject item;
+	
+	public TradePayResponse(Integer http_code, String http_body, Map<String, List<String>> http_headers)
+	{
+		super(http_code, http_body, http_headers);
+		this.item	= (JSONObject) this.decoded_data.get("data");
+	}
+	
+	public String getCancelYmdhis()
+	{
+		return this.item.get("cancel_ymdhis").toString();
+	}
+	
+	public String getChannel()
+	{
+		return this.item.get("channel").toString();
+	}
+	
+	public String getClientIp()
+	{
+		return this.item.get("client_ip").toString();		
+	}
+
+	public String getInTradeNo()
+	{
+		return this.item.get("in_trade_no").toString();		
+	}
+
+	public String getOutTradeNo()
+	{
+		return this.item.get("out_trade_no").toString();		
+	}
+
+	public String getPayedYmdhis()
+	{
+		return this.item.get("payed_ymdhis").toString();		
+	}
+
+	public String getPayokYmdhis()
+	{
+		return this.item.get("payok_ymdhis").toString();		
+	}
+
+	public String getQrCode()
+	{
+		return this.item.get("qr_code").toString();		
+	}
+
+	public String getTitle()
+	{
+		return this.item.get("title").toString();		
+	}
+
+	public String getTotalFee()
+	{
+		return this.item.get("total_fee").toString();		
+	}
+	
+	public String getTradeStatus()
+	{
+		return this.item.getString("trade_status").toString();
+	}
 }

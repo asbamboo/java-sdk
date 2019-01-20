@@ -30,8 +30,10 @@ public abstract class RequestBuilder
 		this.request_data.put("version", this.getVersion());
 	}
 	
-	public ApiResponse post() throws IOException
+	public ResponseBuilder post() throws IOException, Exception
 	{
+		this.generateSign();
+		
 		URL asbamboo_url					= new URL(this.getApiUrl());
 		HttpURLConnection conn				= (HttpURLConnection) asbamboo_url.openConnection();
 		try {			
@@ -65,7 +67,7 @@ public abstract class RequestBuilder
         	while((line = bf_reader.readLine()) != null) {
         		http_res_data.append(line);        		
         	}
-	        return new ApiResponse(http_res_code, http_res_data.toString(), http_res_headers);
+	        return ResponseBuilder.create(this.getApiName(), http_res_code, http_res_data.toString(), http_res_headers);
 		}finally {
             if (conn != null) {
                 conn.disconnect();
