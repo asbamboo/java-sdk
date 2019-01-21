@@ -1,5 +1,7 @@
 package asbamboo.java.sdk;
 
+import java.io.File;
+
 /**
  * 配置信息
  * 
@@ -45,4 +47,9 @@ public class Configure
 	 * 用于asbamboo系统排查SDK方面的异常信息。
 	 */
 	public static String HTTP_HEADER_USER_AGENT_VALUE	= "JAVA_SDK_1.0";
+
+	/**
+	 * 发起api请求设置的连接超时的毫秒数
+	 */
+	public static String PROJECT_LOG_PATH	= System.getProperty("user.dir").concat(File.separator).concat("var").concat(File.separator).concat("project.log"); 
 }

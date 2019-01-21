@@ -34,6 +34,7 @@ public abstract class RequestBuilder
 		this.generateSign();
 		
 		URL asbamboo_url					= new URL(this.getApiUrl());
+		Logger.info("API接口请求URL:" + this.getApiUrl());
 		HttpURLConnection conn				= (HttpURLConnection) asbamboo_url.openConnection();
 		try {			
 			conn.setConnectTimeout(this.getHttpTimeout());
@@ -46,7 +47,9 @@ public abstract class RequestBuilder
 			
 			OutputStream out	= conn.getOutputStream();
 			try{
-				out.write(this.httpBuildQuery().getBytes("UTF-8"));
+				String http_query	= this.httpBuildQuery(); 
+				out.write(http_query.getBytes("UTF-8"));
+				Logger.info("API接口请求参数:\n" + http_query);
 			}finally{
 				if(out != null){
 					out.close();				
@@ -66,6 +69,8 @@ public abstract class RequestBuilder
         	while((line = bf_reader.readLine()) != null) {
         		http_res_data.append(line);        		
         	}
+			Logger.info("API接口响应HTTPCODE:" + http_res_code);
+			Logger.info("API接口响应值:\n" + http_res_data.toString());			
 	        return ResponseBuilder.create(this.getApiName(), http_res_code, http_res_data.toString(), http_res_headers);
 		}finally {
             if (conn != null) {
