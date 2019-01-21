@@ -29,7 +29,7 @@ dependencies {
     implementation 'com.google.guava:guava:26.0-jre'
 
     // Json
-    implementation 'org.json:json:20180813'
+  	implementation 'com.google.code.gson:gson:2.8.5'
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'

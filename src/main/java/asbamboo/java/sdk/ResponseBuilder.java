@@ -2,7 +2,7 @@ package asbamboo.java.sdk;
 
 import java.util.List;
 import java.util.Map;
-import org.json.JSONObject;
+import com.google.gson.Gson;
 import asbamboo.java.sdk.model.*;
 
 /**
@@ -33,7 +33,7 @@ public class ResponseBuilder
 	/**
 	 * Api 响应 HTTP Response 的解析结果
 	 */
-	protected JSONObject decoded_data;
+	protected Map<String, Object> decoded_data;
 
 	/**
 	 * APi 响应 HTTP CODE
@@ -81,7 +81,7 @@ public class ResponseBuilder
     	return this.message;
     }
     
-    public JSONObject getDecodedData()
+    public Map<String, Object> getDecodedData()
     {
     	return this.decoded_data;
     }
@@ -139,7 +139,8 @@ public class ResponseBuilder
     
     private boolean parseHttpBody()
     {
-    	this.decoded_data	= new JSONObject(this.http_body);
+    	Gson gson			= new Gson();
+    	this.decoded_data	= gson.fromJson(this.getHttpBody(), Map.class);
     	if(!this.decoded_data.get("code").equals("0")){
         	this.is_success	= false;
     		this.message	= this.decoded_data.get("message").toString(); 
@@ -155,7 +156,7 @@ public class ResponseBuilder
     private boolean checkSign() throws Exception
     {
     	String sign	= Sign.genrateByResponse(this.decoded_data);
-    	if(this.decoded_data.getString("sign").equals(sign)){
+    	if(this.decoded_data.get("sign").equals(sign)){
     		this.is_valid_sign	= true;
     		return true;
     	}

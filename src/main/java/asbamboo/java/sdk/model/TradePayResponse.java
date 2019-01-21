@@ -2,7 +2,7 @@ package asbamboo.java.sdk.model;
 
 import java.util.List;
 import java.util.Map;
-import org.json.JSONObject;
+import com.google.gson.Gson;
 import asbamboo.java.sdk.ResponseBuilder;
 
 /**
@@ -13,12 +13,14 @@ import asbamboo.java.sdk.ResponseBuilder;
  */
 public class TradePayResponse extends ResponseBuilder
 {
-	private JSONObject item;
+	private Map<String, Object> item;
 	
 	public TradePayResponse(Integer http_code, String http_body, Map<String, List<String>> http_headers) throws Exception
 	{
 		super(http_code, http_body, http_headers);
-		this.item	= (JSONObject) this.decoded_data.get("data");
+    	Gson gson			= new Gson();
+    	String data			= gson.toJson(this.decoded_data.get("data"));
+		this.item			= gson.fromJson(data, Map.class);
 	}
 	
 	public String getCancelYmdhis()
@@ -73,6 +75,6 @@ public class TradePayResponse extends ResponseBuilder
 	
 	public String getTradeStatus()
 	{
-		return this.item.getString("trade_status").toString();
+		return this.item.get("trade_status").toString();
 	}
 }

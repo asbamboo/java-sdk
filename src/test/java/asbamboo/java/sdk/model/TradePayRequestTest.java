@@ -4,15 +4,14 @@ import org.junit.Test;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import asbamboo.java.sdk.Configure;
+import asbamboo.java.sdk.TestConfigure;
 
 public class TradePayRequestTest {
 	
     @Test public void testMain() {
     	try{
-    		Configure.API_URL		= "http://api.asbamboo.de";
-        	Configure.API_APP_KEY	= "5c3adf7db89b8";
-        	Configure.API_SECRET	= "6c030d9bacbbc73dc5aabf9552e54f78";
-        	
+    		TestConfigure.c();
+    		
         	Date now				= new Date();
 	    	SimpleDateFormat sdf	= new SimpleDateFormat("yyyymmddHHmmssSSS");
 	    	String channel			= "ALIPAY_QRCD";
