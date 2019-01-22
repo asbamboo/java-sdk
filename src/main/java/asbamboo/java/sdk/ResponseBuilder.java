@@ -58,6 +58,8 @@ public class ResponseBuilder
 			return new TradeQueryResponse(http_code, http_body, http_headers);			
 		}else if(api_name == "trade.cancel"){
 			return new TradeCancelResponse(http_code, http_body, http_headers);			
+		}else if(api_name == "trade.refund"){
+			return new TradeRefundResponse(http_code, http_body, http_headers);			
 		}
 		return new ResponseBuilder(http_code, http_body, http_headers);
 	}
@@ -153,7 +155,7 @@ public class ResponseBuilder
     		return true;
     	}
 		this.is_success	= false;    	
-    	return false;
+    	return true;
     }
     
     private boolean checkSign() throws Exception
