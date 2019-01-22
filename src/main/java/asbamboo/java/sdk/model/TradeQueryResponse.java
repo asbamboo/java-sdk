@@ -1,8 +1,8 @@
 package asbamboo.java.sdk.model;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 import asbamboo.java.sdk.ResponseBuilder;
 
 /**
@@ -11,11 +11,11 @@ import asbamboo.java.sdk.ResponseBuilder;
  * @author 李春寅<licy2013@aliyun.com>
  * @date 2019年1月17日
  */
-public class TradePayResponse extends ResponseBuilder
+public class TradeQueryResponse extends ResponseBuilder
 {
-	private Map<String, Object> item;
+	private HashMap<String, Object> item;
 	
-	public TradePayResponse(Integer http_code, String http_body, Map<String, List<String>> http_headers) throws Exception
+	public TradeQueryResponse(Integer http_code, String http_body, Map<String, List<String>> http_headers) throws Exception
 	{
 		super(http_code, http_body, http_headers);
 		this.item			= (HashMap<String, Object>) this.decoded_data.get("data");

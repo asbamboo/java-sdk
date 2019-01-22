@@ -2,9 +2,7 @@ package asbamboo.java.sdk;
 
 import java.security.MessageDigest;
 import java.util.Arrays;
-import java.util.Map;
 import java.util.HashMap;
-import com.google.gson.Gson;
 
 /**
  * 签名
@@ -44,7 +42,7 @@ public class Sign
 	 * @return
 	 * @throws Exception
 	 */
-	public static String genrateByResponse(Map<String, Object> json) throws Exception
+	public static String genrateByResponse(HashMap<String, Object> json) throws Exception
 	{
 		String[] keys	= json.keySet().toArray(new String[0]);
 		Arrays.sort(keys);
@@ -56,20 +54,19 @@ public class Sign
 				continue;
 			}
 			if(key.equals("data")){
-		    	Gson gson					= new Gson();
-		    	String data					= gson.toJson(json.get("data"));
-				Map<String, Object> djson	= gson.fromJson(data, Map.class);
-				String[] dkeys				= djson.keySet().toArray(new String[0]);
+				HashMap<String, Object> data= (HashMap<String, Object>) json.get("data");
+				String[] dkeys				= data.keySet().toArray(new String[0]);
 				Arrays.sort(dkeys);
 				value						= "";
 				for(String dkey : dkeys){
-					value	= value + dkey + djson.get(dkey).toString();
+					value	= value + dkey + data.get(dkey).toString();
 				}
 			}
 			sign_string.append(key).append(value);
 
 		}
 		sign_string.append(Configure.API_SECRET);
+		Logger.info("响应值SIGN校验待签名字符串:\n" + sign_string.toString());
 		return Sign.md5(sign_string.toString());
 	}
 	

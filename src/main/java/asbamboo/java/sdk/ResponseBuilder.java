@@ -2,7 +2,7 @@ package asbamboo.java.sdk;
 
 import java.util.List;
 import java.util.Map;
-import com.google.gson.Gson;
+import java.util.HashMap;
 import asbamboo.java.sdk.model.*;
 
 /**
@@ -33,7 +33,7 @@ public class ResponseBuilder
 	/**
 	 * Api 响应 HTTP Response 的解析结果
 	 */
-	protected Map<String, Object> decoded_data;
+	protected HashMap<String, Object> decoded_data;  
 
 	/**
 	 * APi 响应 HTTP CODE
@@ -54,6 +54,8 @@ public class ResponseBuilder
 	{
 		if(api_name == "trade.pay"){
 			return new TradePayResponse(http_code, http_body, http_headers);
+		}else if(api_name == "trade.query"){
+			return new TradeQueryResponse(http_code, http_body, http_headers);			
 		}
 		return new ResponseBuilder(http_code, http_body, http_headers);
 	}
@@ -81,7 +83,7 @@ public class ResponseBuilder
     	return this.message;
     }
     
-    public Map<String, Object> getDecodedData()
+    public HashMap<String, Object> getDecodedData()
     {
     	return this.decoded_data;
     }
@@ -95,7 +97,7 @@ public class ResponseBuilder
     {
     	return this.http_body;
     }
-    
+
     public Map<String, List<String>> getHttpHeaders()
     {
     	return this.http_headers;
@@ -139,8 +141,7 @@ public class ResponseBuilder
     
     private boolean parseHttpBody()
     {
-    	Gson gson			= new Gson();
-    	this.decoded_data	= gson.fromJson(this.getHttpBody(), Map.class);
+    	this.decoded_data	= Json.decode(this.getHttpBody());
     	if(!this.decoded_data.get("code").equals("0")){
         	this.is_success	= false;
     		this.message	= this.decoded_data.get("message").toString(); 

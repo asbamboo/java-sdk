@@ -3,12 +3,19 @@ package asbamboo.java.sdk.model;
 import org.junit.Test;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import asbamboo.java.sdk.Configure;
 import asbamboo.java.sdk.TestConfigure;
 
-public class TradePayRequestTest {
+/**
+ * 
+ * @author 李春寅<licy2013@aliyun.com>
+ * @date 2019年1月21日
+ */
+public class TradeApiRequestTest
+{
+	static String out_trade_no;
 	
-    @Test public void testMain() {
+    @Test public void testPay()
+    {
     	try{
     		TestConfigure.c();
     		
@@ -54,6 +61,8 @@ public class TradePayRequestTest {
 	    	org.junit.Assert.assertEquals(title, response.getTitle());
 	    	org.junit.Assert.assertEquals(total_fee.toString(), response.getTotalFee());
 	    	org.junit.Assert.assertEquals("NOPAY", response.getTradeStatus());
+	    	
+	    	TradeApiRequestTest.out_trade_no	= out_trade_no;
 //	    	
 //	    	System.out.print(response.getInTradeNo());
 //	    	System.out.print(response.getHttpCode());
@@ -61,5 +70,30 @@ public class TradePayRequestTest {
     	}catch(Exception e){
     		org.junit.Assert.assertTrue(e.toString(),false);
     	}
-    }    
+    }
+    
+    @Test public void testQuery()
+    {
+		TestConfigure.c();
+    	try{
+	    	TradeQueryRequest trade_query = new TradeQueryRequest();
+	    	trade_query.setOutTradeNo(TradeApiRequestTest.out_trade_no);
+	    	TradeQueryResponse response			= (TradeQueryResponse) trade_query.post();
+
+//	    	System.out.println(response.getHttpHeaders());
+//	    	System.out.println(response.getHttpBody());
+//	    	System.out.println(response.getHttpCode());
+//	    	System.out.println(response.getIsSuccess());
+	    	
+	    	org.junit.Assert.assertTrue(response.getIsSuccess());
+	    	org.junit.Assert.assertNotNull(response.getMessage());
+	    	org.junit.Assert.assertEquals("200", response.getHttpCode().toString());
+	    	org.junit.Assert.assertNotNull(response.getHttpBody());
+	    	org.junit.Assert.assertNotNull(response.getHttpHeaders());
+	    	org.junit.Assert.assertNotNull(TradeApiRequestTest.out_trade_no, response.getOutTradeNo());
+	    	
+    	}catch(Exception e){
+    		org.junit.Assert.assertTrue(e.toString(),false);
+    	}	    	
+    }
 }
