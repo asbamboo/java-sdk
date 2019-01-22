@@ -56,6 +56,8 @@ public class ResponseBuilder
 			return new TradePayResponse(http_code, http_body, http_headers);
 		}else if(api_name == "trade.query"){
 			return new TradeQueryResponse(http_code, http_body, http_headers);			
+		}else if(api_name == "trade.cancel"){
+			return new TradeCancelResponse(http_code, http_body, http_headers);			
 		}
 		return new ResponseBuilder(http_code, http_body, http_headers);
 	}

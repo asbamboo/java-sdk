@@ -90,7 +90,33 @@ public class TradeApiRequestTest
 	    	org.junit.Assert.assertEquals("200", response.getHttpCode().toString());
 	    	org.junit.Assert.assertNotNull(response.getHttpBody());
 	    	org.junit.Assert.assertNotNull(response.getHttpHeaders());
-	    	org.junit.Assert.assertNotNull(TradeApiRequestTest.out_trade_no, response.getOutTradeNo());
+	    	org.junit.Assert.assertEquals(TradeApiRequestTest.out_trade_no, response.getOutTradeNo());
+	    	
+    	}catch(Exception e){
+    		org.junit.Assert.assertTrue(e.toString(),false);
+    	}	    	
+    }
+
+    @Test public void testCancel()
+    {
+		TestConfigure.c();
+    	try{
+    		TradeCancelRequest trade_cancel		= new TradeCancelRequest();
+    		trade_cancel.setOutTradeNo(TradeApiRequestTest.out_trade_no);
+    		TradeCancelResponse response			= (TradeCancelResponse) trade_cancel.post();
+
+	    	System.out.println(response.getHttpHeaders());
+	    	System.out.println(response.getHttpBody());
+	    	System.out.println(response.getHttpCode());
+	    	System.out.println(response.getIsSuccess());
+	    	
+	    	org.junit.Assert.assertTrue(response.getIsSuccess());
+	    	org.junit.Assert.assertNotNull(response.getMessage());
+	    	org.junit.Assert.assertEquals("200", response.getHttpCode().toString());
+	    	org.junit.Assert.assertNotNull(response.getHttpBody());
+	    	org.junit.Assert.assertNotNull(response.getHttpHeaders());
+	    	org.junit.Assert.assertEquals(TradeApiRequestTest.out_trade_no, response.getOutTradeNo());
+	    	org.junit.Assert.assertEquals("CANCLE", response.getTradeStatus());
 	    	
     	}catch(Exception e){
     		org.junit.Assert.assertTrue(e.toString(),false);
