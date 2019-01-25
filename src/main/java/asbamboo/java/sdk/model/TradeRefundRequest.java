@@ -24,7 +24,7 @@ public class TradeRefundRequest extends RequestBuilder
 		this.request_data.put("out_refund_no", out_refund_no);		
 	}
 
-	public void setOutRefundFee(Integer refund_fee)
+	public void setRefundFee(Integer refund_fee)
 	{
 		this.request_data.put("refund_fee", refund_fee);		
 	}

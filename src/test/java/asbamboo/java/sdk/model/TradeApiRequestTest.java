@@ -130,7 +130,7 @@ public class TradeApiRequestTest
     		TradeRefundRequest trade_refund		= new TradeRefundRequest();
     		trade_refund.setOutTradeNo(TradeApiRequestTest.out_trade_no);
     		trade_refund.setOutRefundNo(TradeApiRequestTest.out_trade_no + "T");
-    		trade_refund.setOutRefundFee(100);
+    		trade_refund.setRefundFee(100);
     		TradeRefundResponse response		= (TradeRefundResponse) trade_refund.post();
 
 //	    	System.out.println(response.getHttpHeaders());
