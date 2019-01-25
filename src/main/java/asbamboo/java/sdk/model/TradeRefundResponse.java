@@ -51,8 +51,8 @@ public class TradeRefundResponse extends ResponseBuilder
 		return this.item.get("refund_pay_ymdhis").toString();		
 	}
 
-	public String getTradeStatus()
+	public String getRefundStatus()
 	{
-		return this.item.get("trade_status").toString();
+		return this.item.get("refund_status").toString();
 	}
 }
