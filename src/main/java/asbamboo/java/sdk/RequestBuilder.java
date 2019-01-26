@@ -29,7 +29,31 @@ public abstract class RequestBuilder
 		this.request_data.put("version", this.getVersion());
 	}
 	
-	public ResponseBuilder post() throws IOException, Exception
+	public String submit() throws Exception
+	{
+		this.generateSign();
+		StringBuilder sb	= new StringBuilder();
+		
+		sb.append("<!DOCTYPE HTML>");
+		sb.append("<html>");
+		sb.append("<body>");
+		sb.append("<form method=\"post\" action=\"" + this.getApiUrl() + "\">\n");
+
+        for(String key : this.request_data.keySet()) {
+			String value	= this.request_data.get(key).toString().replace("\"", "&quot;"); 
+			sb.append("<input type=\"hidden\" name=\"" + key + "\" value=\"" + value + "\" />\n");
+		}
+
+        sb.append("<input type=\"submit\" value=\"立即支付\">\n");
+        sb.append("</form>\n");
+        sb.append("<script>document.forms[0].submit();</script>");
+		sb.append("</body>");
+		sb.append("</html>");
+
+		return sb.toString();
+	}
+	
+	public ResponseBuilder post() throws Exception
 	{
 		this.generateSign();
 		
@@ -88,6 +112,11 @@ public abstract class RequestBuilder
 	protected String getApiUrl()
 	{
 		return Configure.API_URL;
+	}
+
+	protected boolean isFormSubmit()
+	{
+		return false;
 	}
 	
 	public String getHttpUserAgentValue()
