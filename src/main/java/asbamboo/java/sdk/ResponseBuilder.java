@@ -87,6 +87,11 @@ public class ResponseBuilder
     	return this.message;
     }
     
+    public String getDataCode()
+    {
+    	return this.getDecodedData().get("code").toString();
+    }
+    
     public HashMap<String, Object> getDecodedData()
     {
     	return this.decoded_data;
