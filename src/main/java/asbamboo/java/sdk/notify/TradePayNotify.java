@@ -3,9 +3,9 @@ package asbamboo.java.sdk.notify;
 import javax.servlet.http.HttpServletRequest;
 import asbamboo.java.sdk.NotifyBuilder;
 
-public class PayNotify extends NotifyBuilder
+public class TradePayNotify extends NotifyBuilder
 {
-	public PayNotify(HttpServletRequest request)
+	public TradePayNotify(HttpServletRequest request)
 	{
 		super(request);
 	}
