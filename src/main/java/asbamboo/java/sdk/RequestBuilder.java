@@ -55,7 +55,13 @@ public abstract class RequestBuilder
 	
 	public ResponseBuilder post() throws Exception
 	{
-		this.generateSign();
+		return this.post(true);
+	}
+	public ResponseBuilder post(boolean genrate_sign) throws Exception
+	{
+		if(genrate_sign){
+			this.generateSign();			
+		}
 		
 		URL asbamboo_url					= new URL(this.getApiUrl());
 		Logger.info("API接口请求URL:" + this.getApiUrl());
