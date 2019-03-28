@@ -14,7 +14,7 @@ public class ResponseBuilder
 	/**
 	 * 当 is_success 等于 true，表示接口请求成功
 	 *  - HTTP Response code 等于 200
-	 *  - API Response Json Data 中 code 等于 "0"
+	 *  - API Response Json Data 中 code 等于 "SUCCESS"
 	 *  - API Response Json Data 中 sign 有效
 	 */
 	protected boolean is_success = false;
@@ -151,11 +151,11 @@ public class ResponseBuilder
     private boolean parseHttpBody()
     {
     	this.decoded_data	= Json.decode(this.getHttpBody());
-    	if(!this.decoded_data.get("code").equals("0")){
+    	if(!this.decoded_data.get("code").equals("SUCCESS")){
         	this.is_success	= false;
     		this.message	= this.decoded_data.get("message").toString(); 
     	}
-    	if(this.decoded_data.get("code").equals("0")){
+    	if(this.decoded_data.get("code").equals("SUCCESS")){
     		this.message	= this.decoded_data.get("message").toString(); 
     		return true;
     	}
@@ -177,7 +177,7 @@ public class ResponseBuilder
     
     private boolean checkIsSuccess()
     {
-    	if(this.http_code.equals(200) && this.decoded_data.get("code").equals("0") && this.is_valid_sign == true){
+    	if(this.http_code.equals(200) && this.decoded_data.get("code").equals("SUCCESS") && this.is_valid_sign == true){
     		this.is_success	= true;
     		return true;
     	}
